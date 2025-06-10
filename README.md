@@ -62,7 +62,10 @@ It offers:
 * **File Support**: XLSX/CSV parsing via `SheetJS`
 
 ---
-
+## 🖼️ Screenshots
+![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s1.png)
+![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s2.png)
+---
 ## 📬 Feedback
 
 Open to feedback and contributions. If you find bugs or have suggestions, kindly open an issue or reach out.
