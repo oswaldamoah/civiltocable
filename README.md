@@ -32,8 +32,15 @@ It offers:
 * **CSV/XLSX Support**: Import/export your cable presets or distance data in Excel-friendly formats.
 * **PWA Support**: Use offline and install on desktop or mobile like a native app.
 * **No Server Needed**: All data stays local. Secure and fast.
+  
+---
+
+## 🖼️ Screenshots
+![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s1.png)
+![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s2.png)
 
 ---
+
 
 ## 📂 How to Use
 
@@ -60,11 +67,7 @@ It offers:
 * **PWA**: Service workers + manifest
 * **Local Storage**: Caching for persistent data
 * **File Support**: XLSX/CSV parsing via `SheetJS`
-
----
-## 🖼️ Screenshots
-![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s1.png)
-![screenshots/civiltocable_s1.png](/screenshots/civiltocable_s2.png)
+  
 ---
 ## 📬 Feedback
 
