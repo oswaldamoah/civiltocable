@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivilToCable™ Distance Converter</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="https://cdn.glitch.global/45699e71-c6c6-4f41-8910-2ab5daaf632f/icon-512.png?v=1747534896152">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #0a0a0a;
+      color: #f1f1f1;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid #2e2e2e;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 30px;
+      font-weight: 600;
+      background: linear-gradient(90deg, #00d8ff, #3a7bd5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .section h3 {
+      color: #b0b0b0;
+      margin-bottom: 15px;
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #333;
+      border-radius: 10px;
+      font-size: 1rem;
+      background-color: #252525;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #00d8ff;
+      box-shadow: 0 0 0 2px rgba(0, 216, 255, 0.2);
+    }
+
+    .file-input-container {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .file-input-label {
+      display: block;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #252525;
+      border: 1px dashed #444;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .file-input-label:hover {
+      background-color: #2a2a2a;
+      border-color: #00d8ff;
+    }
+
+    .file-input-label span {
+      color: #b0b0b0;
+    }
+
+    .file-input-label strong {
+      color: #00d8ff;
+    }
+
+    #importFile {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #00d8ff, #3a7bd5);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      flex-grow: 1;
+      min-width: 120px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 216, 255, 0.3);
+    }
+
+    button.secondary {
+      background: #252525;
+      color: #b0b0b0;
+    }
+
+    button.secondary:hover {
+      background: #2e2e2e;
+      box-shadow: none;
+      transform: none;
+    }
+
+    button.danger {
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    }
+
+    button.danger:hover {
+      box-shadow: 0 5px 15px rgba(255, 65, 108, 0.3);
+    }
+
+    #cablesList {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: rgba(0, 216, 255, 0.1);
+      border-radius: 8px;
+      color: #00d8ff;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    /* Modal styles */
+    #calculateModal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: #1a1a1a;
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid #2e2e2e;
+      position: relative;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: transparent;
+      color: #b0b0b0;
+      font-size: 1.5rem;
+      border: none;
+      cursor: pointer;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      background-color: #252525;
+      color: white;
+    }
+
+    /* Result styles */
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .result-success {
+      background-color: rgba(46, 125, 50, 0.2);
+      color: #4caf50;
+      border: 1px solid #2e7d32;
+    }
+
+    .result-error {
+      background-color: rgba(211, 47, 47, 0.2);
+      color: #f44336;
+      border: 1px solid #d32f2f;
+    }
+
+    .result-value {
+      font-size: 2rem;
+      margin: 10px 0;
+      color: #4caf50;
+    }
+
+    .result-combination {
+      font-size: 1rem;
+      color: #b0b0b0;
+      margin-top: 10px;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 120px;
+      background-color: #333;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      font-size: 0.8rem;
+      font-weight: normal;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 25px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .modal-content {
+        padding: 30px 20px;
+      }
+
+      .result-value {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CivilToCable™ Distance Converter</h1>
+
+    <div class="section">
+      <h3>Available Cables (meters)</h3>
+      <input type="text" id="cablesInput" placeholder="Enter cable lengths separated by commas, e.g., 50, 60, 80">
+      
+      <div class="button-group">
+        <button onclick="updateCables()">Update Cables</button>
+        <button onclick="exportCables()" class="secondary">Export to CSV</button>
+      </div>
+      
+      <div class="file-input-container">
+        <label for="importFile" class="file-input-label">
+          <span>Drag & drop or <strong>click to browse</strong> CSV/XLSX file</span>
+          <input type="file" id="importFile" accept=".csv, .xlsx">
+        </label>
+      </div>
+      
+      <p>Current cables: <span id="cablesList">No cables entered</span></p>
+    </div>
+
+    <div class="section">
+      <div class="button-group">
+        <button onclick="openModal()">Calculate Cable Distance</button>
+        <button onclick="restart()" class="danger tooltip">
+          Reset
+          <span class="tooltiptext">Alt+C to clear</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="calculateModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">×</button>
+      <h3 style="margin-bottom: 20px;">Calculate Cable Distance</h3>
+      <input type="number" id="civilDistance" placeholder="Enter civil distance in meters" autofocus>
+      
+      <div class="button-group" style="margin-top: 20px;">
+        <button onclick="calculateCable()">Calculate</button>
+        <button onclick="clearInput()" class="secondary tooltip">
+          Clear
+          <span class="tooltiptext">Alt+C to clear</span>
+        </button>
+      </div>
+      
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    // Local storage keys
+    const STORAGE_KEY = 'cableCalculatorData';
+    const CABLES_KEY = 'availableCables';
+    const INPUT_KEY = 'cablesInput';
+
+    // Initialize application
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFromStorage();
+      setupEventListeners();
+      
+      // Initialize with example cables if no stored data
+      if (availableCables.length === 0 && !localStorage.getItem(STORAGE_KEY)) {
+        document.getElementById('cablesInput').value = "50,60,80,100,120";
+        updateCables();
+      }
+    });
+
+    let availableCables = [];
+
+    function loadFromStorage() {
+      const savedData = localStorage.getItem(STORAGE_KEY);
+      if (savedData) {
+        try {
+          const data = JSON.parse(savedData);
+          availableCables = data[CABLES_KEY] || [];
+          document.getElementById('cablesInput').value = data[INPUT_KEY] || '';
+          updateCablesDisplay();
+        } catch (e) {
+          console.error('Failed to parse saved data', e);
+        }
+      }
+    }
+
+    function saveToStorage() {
+      const data = {
+        [CABLES_KEY]: availableCables,
+        [INPUT_KEY]: document.getElementById('cablesInput').value
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function updateCables() {
+      const input = document.getElementById('cablesInput').value;
+      const cables = input.split(',')
+        .map(s => parseFloat(s.trim()))
+        .filter(n => !isNaN(n) && n > 0);
+      availableCables = [...new Set(cables)].sort((a, b) => a - b);
+      updateCablesDisplay();
+      saveToStorage();
+    }
+
+    function updateCablesDisplay() {
+      const display = document.getElementById('cablesList');
+      if (availableCables.length > 0) {
+        display.textContent = availableCables.join('m, ') + 'm';
+      } else {
+        display.textContent = 'No cables entered';
+      }
+    }
+
+    function setupEventListeners() {
+      // File import
+      document.getElementById('importFile').addEventListener('change', importCables);
+      
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        // Alt+C to clear
+        if (e.altKey && e.key.toLowerCase() === 'c') {
+          const activeElement = document.activeElement;
+          if (activeElement.id === 'civilDistance') {
+            clearInput();
+          } else {
+            restart();
+          }
+        }
+        
+        // Enter key in civil distance field triggers calculation
+        if (e.key === 'Enter' && document.activeElement.id === 'civilDistance') {
+          calculateCable();
+        }
+      });
+
+      // Drag and drop for file input
+      document.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('file-input-label')) {
+          e.target.style.borderColor = '#00d8ff';
+          e.target.style.backgroundColor = '#2a2a2a';
+        }
+      });
+
+      document.addEventListener('dragleave', (e) => {
+        if (e.target.classList.contains('file-input-label')) {
+          e.target.style.borderColor = '#444';
+          e.target.style.backgroundColor = '#252525';
+        }
+      });
+
+      document.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('file-input-label')) {
+          e.target.style.borderColor = '#444';
+          e.target.style.backgroundColor = '#252525';
+          if (e.dataTransfer.files.length) {
+            document.getElementById('importFile').files = e.dataTransfer.files;
+            const event = { target: { files: e.dataTransfer.files } };
+            importCables(event);
+          }
+        }
+      });
+    }
+
+    function importCables(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      if (file.name.endsWith('.csv')) {
+        reader.onload = function(e) {
+          const content = e.target.result;
+          const cables = content.split(/[\n,]/)
+            .map(s => parseFloat(s.trim()))
+            .filter(n => !isNaN(n) && n > 0);
+          availableCables = [...new Set(cables)].sort((a, b) => a - b);
+          updateDisplay();
+        };
+        reader.readAsText(file);
+      } else if (file.name.endsWith('.xlsx')) {
+        // Load XLSX library dynamically
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+        script.onload = function() {
+          reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+            const values = json.flat().map(n => parseFloat(n)).filter(n => !isNaN(n) && n > 0);
+            availableCables = [...new Set(values)].sort((a, b) => a - b);
+            updateDisplay();
+          };
+          reader.readAsArrayBuffer(file);
+        };
+        document.head.appendChild(script);
+      }
+
+      function updateDisplay() {
+        document.getElementById('cablesList').textContent = 
+          availableCables.length > 0 ? availableCables.join('m, ') + 'm' : 'No cables entered';
+        document.getElementById('cablesInput').value = availableCables.join(', ');
+        saveToStorage();
+      }
+    }
+
+    function exportCables() {
+      if (availableCables.length === 0) {
+        showResult("No cables to export", true);
+        return;
+      }
+      const csvContent = 'data:text/csv;charset=utf-8,' + availableCables.join('\n');
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'cables.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function calculateCable() {
+      const civilDistance = parseFloat(document.getElementById('civilDistance').value);
+      const resultDiv = document.getElementById('result');
+      
+      if (isNaN(civilDistance) || civilDistance < 0) {
+        showResult("Please enter a valid civil distance", true);
+        return;
+      }
+
+      const required = civilDistance + 10;
+      
+      if (availableCables.length === 0) {
+        showResult("No cables available - please enter cable lengths first", true);
+        return;
+      }
+
+      // Check for single cable
+      const sortedCables = [...availableCables].sort((a, b) => a - b);
+      const singleCable = sortedCables.find(c => c >= required);
+      if (singleCable) {
+        showResult(singleCable, false, `Single cable solution`);
+        return;
+      }
+
+      // Find combination using dynamic programming
+      const descendingCables = [...sortedCables].reverse();
+      const maxCable = descendingCables[0] || 0;
+      const dp = new Array(required + maxCable + 1).fill(Infinity);
+      dp[0] = 0;
+
+      for (let i = 1; i < dp.length; i++) {
+        for (const cable of descendingCables) {
+          if (i >= cable && dp[i - cable] + 1 < dp[i]) {
+            dp[i] = dp[i - cable] + 1;
+          }
+        }
+      }
+
+      // Find minimal sum >= required
+      let minSum = Infinity;
+      for (let i = required; i < dp.length; i++) {
+        if (dp[i] < Infinity) {
+          minSum = i;
+          break;
+        }
+      }
+
+      if (minSum === Infinity) {
+        showResult("No combination available - cables are too short", true);
+        return;
+      }
+
+      // Reconstruct combination
+      let currentSum = minSum;
+      const combination = [];
+      while (currentSum > 0) {
+        for (const cable of descendingCables) {
+          if (currentSum >= cable && dp[currentSum] === dp[currentSum - cable] + 1) {
+            combination.push(cable);
+            currentSum -= cable;
+            break;
+          }
+        }
+      }
+
+      showResult(
+        minSum, 
+        false, 
+        `Combination: ${combination.join('m + ')}m (${combination.length} cables)`
+      );
+    }
+
+    function showResult(value, isError, details = "") {
+      const resultDiv = document.getElementById('result');
+      
+      if (isError) {
+        resultDiv.innerHTML = `<div>${value}</div>`;
+        resultDiv.className = 'result-error';
+      } else {
+        resultDiv.innerHTML = `
+          <div class="result-value">${value}m</div>
+          ${details ? `<div class="result-combination">${details}</div>` : ''}
+        `;
+        resultDiv.className = 'result-success';
+      }
+    }
+
+    function restart() {
+      if (confirm("Are you sure you want to reset all data? This cannot be undone.")) {
+        document.getElementById('cablesInput').value = '';
+        document.getElementById('civilDistance').value = '';
+        document.getElementById('result').innerHTML = '';
+        document.getElementById('result').className = '';
+        availableCables = [];
+        document.getElementById('cablesList').textContent = 'No cables entered';
+        localStorage.removeItem(STORAGE_KEY);
+      }
+    }
+
+    function clearInput() {
+      document.getElementById('civilDistance').value = '';
+      document.getElementById('result').innerHTML = '';
+      document.getElementById('result').className = '';
+    }
+
+    function openModal() {
+      document.getElementById('calculateModal').style.display = 'flex';
+      document.getElementById('civilDistance').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('calculateModal').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
