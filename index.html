@@ -3,9 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Convert civil distances to optimal cable configurations - Powered by MTN">
+  <meta name="theme-color" content="#ffcc00">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="MTN CableCalc">
+  <meta name="msapplication-TileColor" content="#ffcc00">
   <title>CivilToCable Distance Converter | MTN</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
   <style>
     * {
       box-sizing: border-box;
@@ -312,6 +319,46 @@
       opacity: 1;
     }
 
+    /* PWA Install Button */
+    .install-pwa {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #ffcc00, #ffa500);
+      color: #000000;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 25px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(255, 204, 0, 0.3);
+      cursor: pointer;
+      display: none;
+      z-index: 1001;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .install-pwa:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(255, 204, 0, 0.4);
+    }
+
+    .install-pwa.show {
+      display: block;
+      animation: slideInUp 0.3s ease-out;
+    }
+
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 600px) {
       .container {
         padding: 25px;
@@ -365,6 +412,9 @@
       </div>
     </div>
   </div>
+
+  <!-- PWA Install Button -->
+  <button id="installPWA" class="install-pwa">📱 Install App</button>
 
   <!-- Modal -->
   <div id="calculateModal">
@@ -669,6 +719,54 @@
     function closeModal() {
       document.getElementById('calculateModal').style.display = 'none';
     }
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+
+    // PWA Install functionality
+    let deferredPrompt;
+    const installButton = document.getElementById('installPWA');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('beforeinstallprompt event fired');
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      deferredPrompt = e;
+      // Update UI to notify the user they can install the PWA
+      installButton.classList.add('show');
+    });
+
+    installButton.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        const { outcome } = await deferredPrompt.userChoice;
+        console.log(`User response to the install prompt: ${outcome}`);
+        // We've used the prompt, and can't use it again, throw it away
+        deferredPrompt = null;
+        // Hide the install button
+        installButton.classList.remove('show');
+      }
+    });
+
+    window.addEventListener('appinstalled', () => {
+      console.log('PWA was installed');
+      // Hide the install button
+      installButton.classList.remove('show');
+      deferredPrompt = null;
+    });
   </script>
 </body>
 </html>

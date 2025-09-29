@@ -1,21 +1,62 @@
 {
-  "name": "CivilToCable™ Distance Converter",
-  "short_name": "CableCalc",
-  "description": "Convert civil distances to optimal cable configurations",
-  "start_url": "/",
+  "name": "MTN CivilToCable™ Distance Converter",
+  "short_name": "MTN CableCalc",
+  "description": "Convert civil distances to optimal cable configurations - Powered by MTN",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#000000",
   "theme_color": "#ffcc00",
+  "categories": ["utilities", "productivity"],
   "icons": [
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
-      "type": "image/jpg",
-      "sizes": "192x192"
+      "type": "image/jpeg",
+      "sizes": "72x72",
+      "purpose": "any"
     },
     {
       "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
-      "type": "image/jpg",
-      "sizes": "512x512"
+      "type": "image/jpeg", 
+      "sizes": "96x96",
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "128x128",
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "144x144",
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "152x152",
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "384x384",
+      "purpose": "any"
+    },
+    {
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512",
+      "purpose": "any maskable"
     }
   ]
 }
