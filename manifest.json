@@ -4,17 +4,17 @@
   "description": "Convert civil distances to optimal cable configurations",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#1a1a1a",
+  "background_color": "#000000",
+  "theme_color": "#ffcc00",
   "icons": [
     {
-      "src": "https://cdn.glitch.global/45699e71-c6c6-4f41-8910-2ab5daaf632f/icon-192.png?v=1747534885977",
-      "type": "image/png",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpg",
       "sizes": "192x192"
     },
     {
-      "src": "https://cdn.glitch.global/45699e71-c6c6-4f41-8910-2ab5daaf632f/icon-512.png?v=1747534896152",
-      "type": "image/png",
+      "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg",
+      "type": "image/jpg",
       "sizes": "512x512"
     }
   ]

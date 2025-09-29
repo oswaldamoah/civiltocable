@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CivilToCable™ Distance Converter</title>
+  <title>CivilToCable Distance Converter | MTN</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="https://cdn.glitch.global/45699e71-c6c6-4f41-8910-2ab5daaf632f/icon-512.png?v=1747534896152">
+  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
   <style>
     * {
       box-sizing: border-box;
@@ -15,7 +15,7 @@
 
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: #0a0a0a;
+      background-color: #000000;
       color: #f1f1f1;
       min-height: 100vh;
       display: flex;
@@ -31,7 +31,15 @@
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border: 1px solid #2e2e2e;
+      border: 1px solid #ffcc00;
+      position: relative;
+    }
+
+    .mtn-logo {
+      display: block;
+      margin: 0 auto 20px auto;
+      width: 80px;
+      height: auto;
     }
 
     h1 {
@@ -40,8 +48,9 @@
       color: #ffffff;
       margin-bottom: 30px;
       font-weight: 600;
-      background: linear-gradient(90deg, #00d8ff, #3a7bd5);
+      background: linear-gradient(90deg, #ffcc00, #ffa500);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -72,8 +81,8 @@
     input[type="text"]:focus,
     input[type="number"]:focus {
       outline: none;
-      border-color: #00d8ff;
-      box-shadow: 0 0 0 2px rgba(0, 216, 255, 0.2);
+      border-color: #ffcc00;
+      box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.2);
     }
 
     .file-input-container {
@@ -94,7 +103,7 @@
 
     .file-input-label:hover {
       background-color: #2a2a2a;
-      border-color: #00d8ff;
+      border-color: #ffcc00;
     }
 
     .file-input-label span {
@@ -102,7 +111,7 @@
     }
 
     .file-input-label strong {
-      color: #00d8ff;
+      color: #ffcc00;
     }
 
     #importFile {
@@ -128,8 +137,8 @@
       font-size: 1rem;
       border: none;
       border-radius: 10px;
-      background: linear-gradient(135deg, #00d8ff, #3a7bd5);
-      color: white;
+      background: linear-gradient(135deg, #ffcc00, #ffa500);
+      color: #000000;
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 500;
@@ -139,7 +148,7 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 216, 255, 0.3);
+      box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3);
     }
 
     button.secondary {
@@ -164,9 +173,9 @@
     #cablesList {
       display: inline-block;
       padding: 10px 15px;
-      background-color: rgba(0, 216, 255, 0.1);
+      background-color: rgba(255, 204, 0, 0.1);
       border-radius: 8px;
-      color: #00d8ff;
+      color: #ffcc00;
       font-weight: 500;
       margin-top: 10px;
     }
@@ -193,7 +202,7 @@
       width: 90%;
       max-width: 500px;
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
-      border: 1px solid #2e2e2e;
+      border: 1px solid #ffcc00;
       position: relative;
       animation: modalFadeIn 0.3s ease-out;
     }
@@ -324,7 +333,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>CivilToCable™ Distance Converter</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg" alt="MTN Logo" class="mtn-logo">
+    <h1>Civil To Cable Converter</h1>
 
     <div class="section">
       <h3>Available Cables (meters)</h3>
@@ -462,7 +472,7 @@
       document.addEventListener('dragover', (e) => {
         e.preventDefault();
         if (e.target.classList.contains('file-input-label')) {
-          e.target.style.borderColor = '#00d8ff';
+          e.target.style.borderColor = '#ffcc00';
           e.target.style.backgroundColor = '#2a2a2a';
         }
       });
