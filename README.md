@@ -44,7 +44,7 @@ It offers:
 
 ## 📂 How to Use
 
-1. **Open the app**: [https://civiltocable.glitch.me](https://civiltocable.glitch.me)
+1. **Open the app**: [civiltocable.vercel.app](civiltocable.vercel.app)
 2. **Input your data**:
 
    * Enter cable presets manually OR import from a CSV/XLSX file
