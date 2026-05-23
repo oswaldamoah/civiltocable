@@ -1,306 +1,358 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Convert civil distances to optimal cable configurations - Powered by MTN">
-  <meta name="theme-color" content="#ffcc00">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="MTN CableCalc">
-  <meta name="msapplication-TileColor" content="#ffcc00">
-  <title>CivilToCable Distance Converter | MTN</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="manifest" href="manifest.json">
+<title>MTN Civil Cable Optimizer</title>
 
-  <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
-  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
+<style>
+@font-face {
+  font-family: 'MTNBrighterSans';
+  src: url('./MTNBrighterSans-Bold.ttf') format('truetype');
+  font-weight: bold;
+}
 
-  <style>
-    @font-face {
-      font-family: 'MTNBrighterSans';
-      src: url('./MTNBrighterSans-Bold.ttf') format('truetype');
-      font-weight: bold;
-      font-style: normal;
-    }
+/* =========================
+   DESIGN SYSTEM (INDUSTRY GRADE)
+========================= */
+:root {
+  --bg: #070707;
+  --panel: rgba(255,255,255,0.04);
+  --panel-2: rgba(255,255,255,0.06);
+  --stroke: rgba(255,204,0,0.25);
+  --text: #f5f5f5;
+  --muted: #a0a0a0;
+  --brand: #ffcc00;
+  --danger: #ff4b4b;
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+  --radius: 18px;
+  --radius-sm: 12px;
 
-    body {
-      font-family: 'MTNBrighterSans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: #000000;
-      color: #f1f1f1;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+  --shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
 
-    h1, h3, button {
-      font-family: 'MTNBrighterSans', sans-serif;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    .container {
-      width: 100%;
-      max-width: 800px;
-      background-color: #1a1a1a;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border: 1px solid #ffcc00;
-      position: relative;
-    }
+body {
+  font-family: 'MTNBrighterSans', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg) 60%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 16px;
+}
 
-    .mtn-logo {
-      display: block;
-      margin: 0 auto 20px auto;
-      width: 80px;
-      height: auto;
-    }
+/* =========================
+   MAIN CONTAINER
+========================= */
+.app {
+  width: 100%;
+  max-width: 920px;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  padding: 32px;
+}
 
-    h1 {
-      font-size: 2.2rem;
-      text-align: center;
-      margin-bottom: 30px;
-      background: linear-gradient(90deg, #ffcc00, #ffa500);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+/* HEADER */
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
 
-    .section {
-      margin-bottom: 30px;
-    }
+.logo {
+  width: 70px;
+  margin-bottom: 12px;
+}
 
-    .section h3 {
-      color: #b0b0b0;
-      margin-bottom: 15px;
-      font-size: 1.1rem;
-    }
+h1 {
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, var(--brand), #ffa500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-    input[type="text"],
-    input[type="number"] {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 15px;
-      border: 1px solid #333;
-      border-radius: 10px;
-      font-size: 1rem;
-      background-color: #252525;
-      color: white;
-    }
+.sub {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
 
-    input:focus {
-      outline: none;
-      border-color: #ffcc00;
-    }
+/* =========================
+   GRID LAYOUT
+========================= */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
 
-    .button-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 15px;
-    }
+/* SECTION CARD */
+.card {
+  background: var(--panel-2);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  padding: 20px;
+}
 
-    button {
-      padding: 12px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #ffcc00, #ffa500);
-      color: #000;
-      cursor: pointer;
-      flex-grow: 1;
-      min-width: 120px;
-    }
+/* LABELS */
+label {
+  font-size: 13px;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 8px;
+}
 
-    button.secondary {
-      background: #252525;
-      color: #b0b0b0;
-    }
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
 
-    button.danger {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-    }
+input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(255,204,0,0.15);
+}
 
-    #cablesList {
-      padding: 10px 15px;
-      background: rgba(255, 204, 0, 0.1);
-      border-radius: 8px;
-      color: #ffcc00;
-      display: inline-block;
-      margin-top: 10px;
-    }
+/* BUTTONS */
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
 
-    #calculateModal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
+button {
+  flex: 1;
+  min-width: 140px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
 
-    .modal-content {
-      background: #1a1a1a;
-      padding: 40px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 500px;
-      border: 1px solid #ffcc00;
-    }
+.primary {
+  background: linear-gradient(135deg, var(--brand), #ff9f1a);
+  color: black;
+}
 
-    .close-btn {
-      position: absolute;
-      right: 15px;
-      top: 15px;
-      background: transparent;
-      color: #fff;
-      font-size: 1.5rem;
-    }
+.primary:hover {
+  transform: translateY(-2px);
+}
 
-    #result {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-    }
+.secondary {
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+}
 
-    .result-success {
-      background: rgba(46,125,50,0.2);
-      color: #4caf50;
-    }
+.secondary:hover {
+  background: rgba(255,255,255,0.1);
+}
 
-    .result-error {
-      background: rgba(211,47,47,0.2);
-      color: #f44336;
-    }
+.danger {
+  background: linear-gradient(135deg, #ff4b4b, #d60000);
+  color: white;
+}
 
-    .result-value {
-      font-size: 2rem;
-    }
+/* CABLE DISPLAY */
+.badge {
+  margin-top: 12px;
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(255,204,0,0.1);
+  border: 1px solid rgba(255,204,0,0.2);
+  border-radius: 999px;
+  color: var(--brand);
+  font-size: 13px;
+}
 
-    .install-pwa {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: linear-gradient(135deg, #ffcc00, #ffa500);
-      border-radius: 50px;
-      padding: 15px 25px;
-      display: none;
-    }
+/* RESULT */
+.result {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: var(--radius);
+  text-align: center;
+  font-weight: 600;
+}
 
-    .install-pwa.show {
-      display: block;
-    }
-  </style>
+.success {
+  background: rgba(0,255,120,0.08);
+  border: 1px solid rgba(0,255,120,0.2);
+}
+
+.error {
+  background: rgba(255,50,50,0.08);
+  border: 1px solid rgba(255,50,50,0.2);
+}
+
+/* MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 480px;
+  background: #111;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .app {
+    padding: 20px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<div class="container">
-  <img class="mtn-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
-  <h1>Civil To Cable Converter</h1>
+<div class="app">
 
-  <div class="section">
-    <h3>Available Cables (meters)</h3>
-    <input type="text" id="cablesInput" placeholder="e.g. 50, 60, 80">
-
-    <div class="button-group">
-      <button onclick="updateCables()">Update</button>
-      <button class="secondary" onclick="exportCables()">Export CSV</button>
-    </div>
-
-    <p>Current cables: <span id="cablesList">No cables entered</span></p>
+  <div class="header">
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg">
+    <h1>Cable Optimization System</h1>
+    <div class="sub">Civil Distance → Optimal Cable Matching Engine</div>
   </div>
 
-  <div class="section">
-    <div class="button-group">
-      <button onclick="openModal()">Calculate</button>
-      <button class="danger" onclick="restart()">Reset</button>
+  <div class="grid">
+
+    <!-- INPUT CARD -->
+    <div class="card">
+      <label>Available Cable Lengths (meters)</label>
+      <input id="cablesInput" placeholder="e.g. 50, 60, 80, 100">
+
+      <div class="actions">
+        <button class="primary" onclick="updateCables()">Update Cables</button>
+        <button class="secondary" onclick="exportCables()">Export</button>
+      </div>
+
+      <div class="badge" id="cablesList">No cables loaded</div>
     </div>
+
+    <!-- ACTION CARD -->
+    <div class="card">
+      <div class="actions">
+        <button class="primary" onclick="openModal()">Run Calculation</button>
+        <button class="danger" onclick="restart()">Reset System</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
-<button id="installPWA" class="install-pwa">Install App</button>
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <span class="close" onclick="closeModal()">✕</span>
 
-<div id="calculateModal">
-  <div class="modal-content">
-    <button class="close-btn" onclick="closeModal()">×</button>
-    <h3>Calculate Cable Distance</h3>
+    <h3 style="margin-bottom:12px;">Cable Distance Calculator</h3>
 
-    <input type="number" id="civilDistance" placeholder="Enter distance">
+    <input id="civilDistance" type="number" placeholder="Enter civil distance (m)" />
 
-    <div class="button-group">
-      <button onclick="calculateCable()">Calculate</button>
+    <div class="actions">
+      <button class="primary" onclick="calculateCable()">Calculate</button>
       <button class="secondary" onclick="clearInput()">Clear</button>
     </div>
 
-    <div id="result"></div>
+    <div id="result" class="result"></div>
   </div>
 </div>
 
 <script>
-let availableCables = [];
+let cables = [];
 
 function updateCables() {
-  const input = document.getElementById('cablesInput').value;
-  availableCables = input.split(',')
+  const input = document.getElementById("cablesInput").value;
+  cables = input.split(",")
     .map(x => parseFloat(x.trim()))
     .filter(x => !isNaN(x));
-  document.getElementById('cablesList').textContent =
-    availableCables.join('m, ') + 'm';
+
+  document.getElementById("cablesList").textContent =
+    cables.length ? cables.join("m • ") + "m" : "No cables loaded";
 }
 
 function calculateCable() {
-  const d = parseFloat(document.getElementById('civilDistance').value);
-  const result = document.getElementById('result');
+  const d = parseFloat(document.getElementById("civilDistance").value);
+  const result = document.getElementById("result");
 
-  if (!d || availableCables.length === 0) {
-    result.className = 'result-error';
-    result.innerHTML = 'Invalid input';
+  if (!d || cables.length === 0) {
+    result.className = "result error";
+    result.innerText = "Invalid input or no cables";
     return;
   }
 
   const required = d + 10;
-  const match = availableCables.find(c => c >= required);
+
+  const match = cables.find(c => c >= required);
 
   if (match) {
-    result.className = 'result-success';
-    result.innerHTML = `<div class="result-value">${match}m</div>`;
+    result.className = "result success";
+    result.innerHTML = `Optimal Cable: <b>${match}m</b>`;
   } else {
-    result.className = 'result-error';
-    result.innerHTML = 'No suitable cable';
+    result.className = "result error";
+    result.innerText = "No suitable cable found";
   }
 }
 
 function openModal() {
-  document.getElementById('calculateModal').style.display = 'flex';
+  document.getElementById("modal").style.display = "flex";
 }
 
 function closeModal() {
-  document.getElementById('calculateModal').style.display = 'none';
+  document.getElementById("modal").style.display = "none";
 }
 
 function clearInput() {
-  document.getElementById('civilDistance').value = '';
+  document.getElementById("civilDistance").value = "";
 }
 
 function restart() {
-  availableCables = [];
-  document.getElementById('cablesInput').value = '';
-  document.getElementById('cablesList').textContent = 'No cables entered';
+  cables = [];
+  document.getElementById("cablesInput").value = "";
+  document.getElementById("cablesList").textContent = "No cables loaded";
 }
 
 function exportCables() {
-  const blob = new Blob([availableCables.join('\n')], {type: 'text/csv'});
-  const a = document.createElement('a');
+  const blob = new Blob([cables.join("\n")], { type: "text/csv" });
+  const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = 'cables.csv';
+  a.download = "cables.csv";
   a.click();
 }
 </script>
