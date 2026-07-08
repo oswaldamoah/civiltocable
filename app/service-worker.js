@@ -1,9 +1,9 @@
-const CACHE_NAME = 'mtn-cable-converter-v2';
+const CACHE_NAME = 'mtn-cable-converter-v4';
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.jpg/960px-New-mtn-logo.jpg'
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/mtnlogo.jpg'
 ];
 
 self.addEventListener('install', event => {
@@ -41,6 +41,11 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Skip non-GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then(response => {
@@ -48,28 +53,31 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
+
         return fetch(event.request).then(response => {
-          // Don't cache non-successful responses
-          if (!response || response.status !== 200 || response.type !== 'basic') {
+          // Cache successful responses
+          if (!response || response.status !== 200 || response.type === 'error') {
             return response;
           }
-          
-          // Clone the response
+
           const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-          
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseToCache);
+          });
+
           return response;
+        }).catch(() => {
+          // Fallback to index.html for SPA routing when offline
+          if (event.request.mode === 'navigate' || event.request.destination === 'document') {
+            return caches.match('/index.html');
+          }
         });
       })
       .catch(error => {
         console.error('Fetch failed:', error);
         // Return a fallback page if available
         if (event.request.destination === 'document') {
-          return caches.match('./index.html');
+          return caches.match('/index.html');
         }
       })
   );
