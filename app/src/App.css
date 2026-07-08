@@ -1,7 +1,9 @@
 @font-face {
   font-family: "MTNBrighterSans";
-  src: url("./MTNBrighterSans-Bold.ttf") format("truetype");
-  font-weight: bold;
+  src: url("/MTNBrighterSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
 
 :root {
@@ -27,7 +29,12 @@
 }
 
 body {
-  font-family: "MTNBrighterSans", system-ui, sans-serif;
+  font-family:
+    Inter,
+    "Segoe UI",
+    ui-sans-serif,
+    system-ui,
+    sans-serif;
   background: radial-gradient(circle at top, #1a1a1a 0%, var(--bg) 60%);
   color: var(--text);
   min-height: 100vh;
@@ -64,12 +71,18 @@ body {
 }
 
 h1 {
+  font-family: "MTNBrighterSans", sans-serif;
   font-size: 28px;
   letter-spacing: 0.5px;
   background: linear-gradient(90deg, var(--brand), #ffa500);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+h3,
+button {
+  font-family: "MTNBrighterSans", sans-serif;
 }
 
 .sub {
