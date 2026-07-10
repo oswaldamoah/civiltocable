@@ -3,7 +3,8 @@
 A distance-based cable cost cutter for fiber-optic deployment.
 
 ## Walkthrough
-<video src="https://github.com/oswaldamoah/civiltocable/blob/main/screenshots/walkthrough.webp" width="100%" controls autoplay loop muted></video>
+<img src="https://github.com/oswaldamoah/civiltocable/blob/main/screenshots/walkthrough.webp" width="100%" alt="Walkthrough animation">
+
 ---
 
 ## Problem
